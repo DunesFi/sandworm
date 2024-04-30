@@ -118,7 +118,7 @@ sudo ln -s "$(which pm2)" /sbin/bun
 
 ### 8 Starting the app as sudo (Run Bun in background and when server restart)
 ```sh
-sudo pm2 start pm2.config.js
+sudo pm2 start pm2.config.cjs
 ```
 ```sh
 sudo pm2 save     # saves the running processes
