@@ -1,4 +1,5 @@
-// run w/ pm2 start pm2.config.js
-export const name = "dunes-sandworm";
-export const script = "index.ts";
-export const interpreter = "~/.bun/bin/bun";
+export default {
+  name: "sandworm", // Name of your application
+  script: "index.ts", // Entry point of your application
+  interpreter: "~/.bun/bin/bun", // Path to the Bun interpreter
+};
