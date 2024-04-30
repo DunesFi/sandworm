@@ -113,7 +113,7 @@ sudo ln -s "$(which npm)" /sbin/npm
 sudo ln -s "$(which pm2)" /sbin/pm2
 ```
 ```sh
-sudo ln -s "$(which pm2)" /sbin/bun
+sudo ln -s "$(which bun)" /sbin/bun
 ```
 
 ### 8 Starting the app as sudo (Run Bun in background and when server restart)
