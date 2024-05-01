@@ -18,16 +18,15 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: eu-west-1
 
-      # Step 4
-    - name: Make .env file
-      uses: SpicyPizza/create-envfile@v2.0
-      with:
-        envkey_SUPABASE_PROJECT_ID: ${{ vars.SUPABASE_PROJECT_ID }}
-        file_name: .env
-        fail_on_empty: false
-        sort_keys: false
+#    - name: Make .env file
+#      uses: SpicyPizza/create-envfile@v2.0
+#      with:
+#        envkey_SUPABASE_PROJECT_ID: ${{ vars.SUPABASE_PROJECT_ID }}
+#        file_name: .env
+#        fail_on_empty: false
+#        sort_keys: false
 
-      # Step 4
+      # Step 3
     - name: Create CodeDeploy Deployment
       id: deploy
       run: |
