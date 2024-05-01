@@ -18,7 +18,7 @@ const app = express();
 const port = 80;
 
 app.get("/", (req, res) => {
-    res.send("Shai-Hulud");
+    res.send("Shai-Hulud!");
 });
 
 app.listen(port, () => {
