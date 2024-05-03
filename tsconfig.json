@@ -12,15 +12,17 @@
     "downlevelIteration": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
+    "jsxImportSource": "@lilybird/jsx",
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
     "allowJs": true,
     "baseUrl": ".",
-    "types": ["bun-types"],
+    "types": ["bun-types", "./globals", "./env"],
     "resolveJsonModule": true,
     "esModuleInterop": true,
     "paths": {
       "@/*": ["./*"]
-    }
-  }
+    },
+  },
+  "include": ["./package.json"]
 }

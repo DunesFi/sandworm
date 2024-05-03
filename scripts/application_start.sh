@@ -1,6 +1,10 @@
 #!/bin/bash
-# shellcheck disable=SC2129
-echo 'run application_start.sh: ' >> /home/ubuntu/DunesFi/sandworm/deploy.log
 
-echo 'pm2 restart sandworm' >> /home/ubuntu/DunesFi/sandworm/deploy.log
-pm2 restart sandworm >> /home/ubuntu/DunesFi/sandworm/deploy.log
+SANDWORM_DIR="/home/ubuntu/DunesFi/sandworm/"
+
+# Append starting message to log
+echo 'run application_start.sh: ' >> $SANDWORM_DIR/deploy.log
+
+# Log and restart the application, handle errors
+echo 'pm2 restart sandworm' >> $SANDWORM_DIR/deploy.log
+pm2 restart sandworm >> $SANDWORM_DIR/deploy.log 2>&1 || exit 1
