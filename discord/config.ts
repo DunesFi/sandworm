@@ -6,14 +6,6 @@ export const COMMIT_HASH = spawnSync({
 }).stdout.toString();
 
 export const LILYBIRD_VERSION = sliceIfStartsWith(dependencies.lilybird, "^");
-export const LILYBIRD_JSX_VERSION = sliceIfStartsWith(
-  dependencies["@lilybird/jsx"],
-  "^"
-);
-export const LILYBIRD_HANDLERS_VERSION = sliceIfStartsWith(
-  dependencies["@lilybird/handlers"],
-  "^"
-);
 
 export const PRODUCTION = process.env.NODE_ENV === "production";
 export const DEV_MODE = process.env.DEV_MODE === "true";
