@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { erc20Abi, hexToBigInt, PublicClient } from 'viem';
+import { erc20Abi, PublicClient } from 'viem';
 import { ChainConfiguration } from '../../../chains/config';
 
 export async function processDETHBlockBalances(
@@ -22,7 +22,7 @@ export async function processDETHBlockBalances(
     .limit(1);
 
   if (fetchError) {
-    console.error("Error fetching latest balance:", fetchError.message);
+    console.error("❌ Error fetching latest balance:", fetchError.message);
     return; // Stop execution if there's an error fetching the data
   }
 
@@ -39,7 +39,7 @@ export async function processDETHBlockBalances(
 
   let { data: existingUsers, error } = await supabase.from(table_name2).select("*");
   if (error) {
-    console.error("Error fetching existing users:", error.message);
+    console.error("❌ Error fetching existing users:", error.message);
     return; // Stop execution if there's an error fetching the data
   }
   if (!existingUsers || existingUsers.length === 0) {
