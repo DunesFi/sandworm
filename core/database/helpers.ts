@@ -165,3 +165,52 @@ export async function updateLastProcessedBlock(
     console.log("❌ Failed to update last processed block\n", { depositBlock, error });
   }
 }
+
+export async function processTransferLogs(supabase: SupabaseClient, config: ChainConfiguration, logs: any) {
+  let lastBlockNumber = 0n;
+  const table_name = config.networkName.concat("_holders");
+
+  // Fetch existing users once
+  let { data: existingUsers, error } = await supabase.from(table_name).select("user");
+  if (error) {
+    console.error("❌ Error fetching existing users:", error.message);
+    return lastBlockNumber;
+  }
+
+  const existingUserSet = new Set(existingUsers ? existingUsers.map(user => user.user) : []);
+  const newUserSet = new Set<string>();
+
+  // Use for...of loop for proper async handling
+  for (const log of logs) {
+    const args = log.args;
+    const blockNumber = BigInt(log.blockNumber);
+    const to = args.to;
+
+    if (blockNumber > lastBlockNumber) {
+      lastBlockNumber = blockNumber;
+    }
+
+    if (!existingUserSet.has(to) && !newUserSet.has(to)) {
+      newUserSet.add(to);
+    }
+  }
+
+  // Batch insert if there are new users to add
+  if (newUserSet.size > 0) {
+    const newUserArray = Array.from(newUserSet).map(user => ({
+      id: user.concat("-").concat(config.chainId.toString()), // Ensure ID is a string
+      user: user,
+    }));
+
+    try {
+      const { data: insertData, error: insertError } = await supabase.from(table_name).insert(newUserArray);
+      if (insertError) {
+        console.error("❌ Error inserting new users:", insertError.message);
+      }
+    } catch (error) {
+      console.error("❌ Error during batch database operation:", error);
+    }
+  }
+
+  return lastBlockNumber;
+}

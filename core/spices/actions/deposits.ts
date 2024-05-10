@@ -11,7 +11,7 @@ import {
 import { getDETHDepositsLogs, processDETHDepositLogs } from '../../chains/helpers';
 import { Deposit } from './types';
 
-async function processDeposits(chain: Chain) {
+async function snapshotDETHDeposits(chain: Chain) {
   let currentChain = chain;
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 

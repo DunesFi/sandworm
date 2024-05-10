@@ -1,6 +1,6 @@
 export interface ChainConfiguration {
   DepositPool: string;
-  DETH: string;
+  DETH: `0x${string}`;
   deployBlock: bigint;
   rpcUrl: string | undefined;
   networkName: string;
