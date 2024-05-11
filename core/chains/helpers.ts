@@ -1,9 +1,10 @@
 import { parseAbiItem, PublicClient } from 'viem';
 import { Deposit } from '../spices/actions/types';
+import { MergedConfiguration } from '../config';
 
-export async function getDETHDepositsLogs(lastBlock: bigint, client: PublicClient, config: { DepositPool: string }) {
+export async function getDETHDepositsLogs(lastBlock: bigint, client: PublicClient, config: MergedConfiguration) {
   const filter = await client.createEventFilter({
-    address: config.DepositPool as `0x${string}`,
+    address: config.contracts.DepositPool as `0x${string}`,
     event: parseAbiItem(
       "event AssetDeposit(address indexed depositor, address indexed asset, uint256 depositAmount, uint256 dETHMintAmount, string referralId)",
     ),
@@ -46,9 +47,9 @@ export function processDETHDepositLogs(logs: any[]): [Deposit[], bigint] {
   return [processedDeposits, lastBlockNumber];
 }
 
-export async function getDETHTransfersLogs(lastBlock: bigint, publicClient: any, config: { DETH: string }) {
+export async function getDETHTransfersLogs(lastBlock: bigint, publicClient: any, config: MergedConfiguration) {
   const filter = await publicClient.createEventFilter({
-    address: config.DETH as `0x${string}`,
+    address: config.contracts.DETH as `0x${string}`,
     event: parseAbiItem("event Transfer(address indexed from, address indexed to, uint256 value)"),
     fromBlock: lastBlock + 1n,
   });

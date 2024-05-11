@@ -1,6 +1,6 @@
 // Function to calculate total points based on dETHMintAmount
-import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from './config';
 import { DepositorInfoJson } from './actions/types';
+import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from '../config/spices';
 
 export function calculateDETHDepositSpices(dETHMintAmount: bigint, isRef: boolean): bigint {
   if (isRef) {

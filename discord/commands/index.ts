@@ -16,39 +16,46 @@ handler.addCommand({
 
 handler.addCommand({
     name: "purge",
-    description: "Purge all or specific actions for a chain from database",
+    description: "Purge all or specific actions logs from database",
     options: [
       {
-        name: "ethereum",
-        description: "Actions related to Spices snapshots on Ethereum",
-        type: ApplicationCommandOptionType.SUB_COMMAND_GROUP,
+        name: "deposits",
+        description: "Purge deposits from database",
+        type: ApplicationCommandOptionType.SUB_COMMAND,
         options: [
           {
-            name: "deposits",
-            description: "Purge all deposits from database",
-            type: ApplicationCommandOptionType.SUB_COMMAND
+            name: "asset",
+            description: "Asset to purge balances of",
+            type: ApplicationCommandOptionType.STRING,
+            required: false // wipe all assets if not specified
           },
           {
-            name: "balances",
-            description: "Purge balances from database",
-            type: ApplicationCommandOptionType.SUB_COMMAND,
-            options: [
-              {
-                name: "deth",
-                description: "Purge dETH deposits from database",
-                type: ApplicationCommandOptionType.STRING,
-                required: true
-              },
-              {
-                name: "dusd",
-                description: "Purge dUSD deposits from database",
-                type: ApplicationCommandOptionType.STRING,
-                required: true
-              },
-            ]
-          }
+            name: "chain",
+            description: "Chain to purge balances from",
+            type: ApplicationCommandOptionType.STRING,
+            required: false // wipe all chains if not specified
+          },
         ]
       },
+      {
+        name: "balances",
+        description: "Purge balances from database",
+        type: ApplicationCommandOptionType.SUB_COMMAND,
+        options: [
+          {
+            name: "asset",
+            description: "Asset to purge balances of",
+            type: ApplicationCommandOptionType.STRING,
+            required: false // wipe all assets if not specified
+          },
+          {
+            name: "chain",
+            description: "Chain to purge balances from",
+            type: ApplicationCommandOptionType.STRING,
+            required: false // wipe all chains if not specified
+          },
+        ]
+      }
     ]
   },
   handlePurgeInteraction

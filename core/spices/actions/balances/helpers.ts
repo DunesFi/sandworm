@@ -1,11 +1,11 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { erc20Abi, PublicClient } from 'viem';
-import { ChainConfiguration } from '../../../chains/config';
+import { MergedConfiguration } from '../../../config';
 
 export async function processDETHBlockBalances(
   supabase: SupabaseClient,
   client: PublicClient,
-  config: ChainConfiguration,
+  config: MergedConfiguration,
 ) {
   const lastChainBlock = await client.getBlockNumber();
   const today = new Date();
@@ -54,7 +54,7 @@ export async function processDETHBlockBalances(
   const results: bigint[] = await Promise.all(
     uniqueHolders.map((address) =>
       client.readContract({
-        address: config.DETH,
+        address: config.contracts.DETH,
         abi: erc20Abi,
         functionName: 'balanceOf',
         args: [address],

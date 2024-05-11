@@ -11,7 +11,7 @@ export class CommandManager {
   readonly #commands: Array<ApplicationCommandJSONParams> = [];
   readonly #cachePath: string;
 
-  public constructor(path: string = `${import.meta.dir}/../lily-cache/commands.json`) {
+  public constructor(path: string = `${import.meta.dir}/../../lily-cache/commands.json`) {
     this.#cachePath = path;
   }
 

@@ -1,7 +1,5 @@
 import { Chain, createPublicClient, http } from 'viem';
 import { createClient } from "@supabase/supabase-js";
-import { SUPABASE_URL, SUPABASE_KEY } from '../../../database/config';
-import chainConfigs, { validateConfig } from '../../../chains/config';
 import {
   DatabaseBlockData,
   fetchLastProcessedBlocks,
@@ -10,12 +8,14 @@ import {
 } from '../../../database/helpers';
 import { getDETHTransfersLogs } from '../../../chains/helpers';
 import { processDETHBlockBalances } from './helpers';
+import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
+import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
 
 async function snapshotDETHBalances(chain: Chain) {
   let currentChain = chain;
   const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-  const config = chainConfigs[currentChain.id];
+  const config: MergedConfiguration = getMergedConfig(currentChain.id);
   if (!validateConfig(config)) {
     console.error("❌ Configuration error for chain", currentChain.id);
     return;

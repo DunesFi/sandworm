@@ -1,7 +1,7 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { ChainConfiguration } from '../chains/config';
 import { Deposit, DepositorInfo, DepositorInfoJson } from '../spices/actions/types';
 import { calculateDETHDepositSpices, getTotalDETHDeposit } from '../spices/helpers';
+import { ChainConfiguration } from '../config/chains';
 
 export type DatabaseBlockData = {
   id: string,
