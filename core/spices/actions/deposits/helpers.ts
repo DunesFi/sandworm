@@ -1,6 +1,6 @@
 import { parseAbiItem, PublicClient } from 'viem';
-import { Deposit } from '../spices/actions/types';
-import { MergedConfiguration } from '../config';
+import { MergedConfiguration } from '../../../config';
+import { Deposit } from '../types';
 
 export async function getDETHDepositsLogs(lastBlock: bigint, client: PublicClient, config: MergedConfiguration) {
   const filter = await client.createEventFilter({
@@ -45,14 +45,4 @@ export function processDETHDepositLogs(logs: any[]): [Deposit[], bigint] {
   });
 
   return [processedDeposits, lastBlockNumber];
-}
-
-export async function getDETHTransfersLogs(lastBlock: bigint, publicClient: any, config: MergedConfiguration) {
-  const filter = await publicClient.createEventFilter({
-    address: config.contracts.DETH as `0x${string}`,
-    event: parseAbiItem("event Transfer(address indexed from, address indexed to, uint256 value)"),
-    fromBlock: lastBlock + 1n,
-  });
-
-  return await publicClient.getFilterLogs({ filter });
 }

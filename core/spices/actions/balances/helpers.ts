@@ -1,5 +1,5 @@
 import { SupabaseClient } from '@supabase/supabase-js';
-import { erc20Abi, PublicClient } from 'viem';
+import { erc20Abi, parseAbiItem, PublicClient } from 'viem';
 import { MergedConfiguration } from '../../../config';
 
 export async function processDETHBlockBalances(
@@ -93,4 +93,14 @@ export async function processDETHBlockBalances(
   } else {
     console.log("⚠️ No balances to insert");
   }
+}
+
+export async function getDETHTransfersLogs(lastBlock: bigint, publicClient: any, config: MergedConfiguration) {
+  const filter = await publicClient.createEventFilter({
+    address: config.contracts.DETH as `0x${string}`,
+    event: parseAbiItem("event Transfer(address indexed from, address indexed to, uint256 value)"),
+    fromBlock: lastBlock + 1n,
+  });
+
+  return await publicClient.getFilterLogs({ filter });
 }

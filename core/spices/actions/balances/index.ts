@@ -6,8 +6,7 @@ import {
   initializeLastProcessedBlock,
   processTransferLogs, updateLastProcessedBlock
 } from '../../../database/helpers';
-import { getDETHTransfersLogs } from '../../../chains/helpers';
-import { processDETHBlockBalances } from './helpers';
+import { getDETHTransfersLogs, processDETHBlockBalances } from './helpers';
 import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
 import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
 

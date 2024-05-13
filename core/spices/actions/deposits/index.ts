@@ -1,15 +1,15 @@
 import { Chain, createPublicClient, http } from 'viem';
 import { createClient } from "@supabase/supabase-js";
+import { getDETHDepositsLogs, processDETHDepositLogs } from './helpers';
 import {
   DatabaseBlockData,
   fetchLastProcessedBlocks,
   initializeLastProcessedBlock,
   updateDepositTable, updateLastProcessedBlock
-} from '../../database/helpers';
-import { getDETHDepositsLogs, processDETHDepositLogs } from '../../chains/helpers';
-import { Deposit } from './types';
-import { SUPABASE_KEY, SUPABASE_URL } from '../../config/database';
-import { getMergedConfig, MergedConfiguration, validateConfig } from '../../config';
+} from '../../../database/helpers';
+import { Deposit } from '../types';
+import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
+import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
 
 async function snapshotDETHDeposits(chain: Chain) {
   let currentChain = chain;
