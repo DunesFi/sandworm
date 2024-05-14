@@ -9,14 +9,17 @@ import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
 import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
 import { sepolia, mainnet, } from 'viem/chains';
 import { getAssetTransfersLogs } from './helpers';
+import { getChainAndAssetFromText } from '../../helpers';
 
 
 /**
  * Saves transfer event data to the database for a specified blockchain chain and asset.
- * @param {Chain} chain - The blockchain chain to query for transfer events.
- * @param {string} asset - The asset address for which to save transfer events.
+ * @param {string} chain - The  chain name to query for transfer events.
+ * @param {string} asset - The asset name for which to save transfer events.
  */
-async function saveTransferEvents(chain: Chain, asset: string) {
+async function saveTransferEvents(chainName: string, assetName: string) {
+
+    const { chain, assetAddress: asset } = await getChainAndAssetFromText(chainName, assetName);
 
     // Create a Supabase client using the configured URL and Key
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);

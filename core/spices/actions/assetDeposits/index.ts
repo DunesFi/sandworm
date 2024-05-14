@@ -6,17 +6,21 @@ import {
 } from '../../../database/helpers';
 import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
 import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
-import { sepolia, mainnet, } from 'viem/chains';
 import { getAssetDepositLogs } from './helpers';
+import { getChainAndAssetFromText } from '../../helpers';
+
+
+
 
 
 /**
  * Saves deposit event data to the database for a specified blockchain chain and asset.
- * @param {Chain} chain - The blockchain chain to query for deposit events.
- * @param {string} asset - The asset address for which to save deposit events. DETH or DUSD
+ * @param {string} chain - The  chain name to query for deposit events.
+ * @param {string} asset - The asset name for which to save deposit events. DETH or DUSD
  */
-async function saveAssetDepositEvents(chain: Chain, asset: string) {
+async function saveAssetDepositEvents(chainName: string, assetName: string) {
 
+    const { chain, assetAddress: asset } = await getChainAndAssetFromText(chainName, assetName);
     // Create a Supabase client using the configured URL and Key
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 

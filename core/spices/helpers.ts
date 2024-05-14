@@ -1,6 +1,8 @@
 // Function to calculate total points based on dETHMintAmount
 import { DepositorInfoJson } from './actions/types';
 import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from '../config/spices';
+import { sepolia, mainnet, arbitrum, arbitrumSepolia, Chain } from 'viem/chains';
+import { MergedConfiguration, getMergedConfig } from '../config';
 
 export function calculateDETHDepositSpices(dETHMintAmount: bigint, isRef: boolean): bigint {
   if (isRef) {
@@ -25,4 +27,30 @@ export function getTotalDETHDeposit(deposit1: DepositorInfoJson, deposit2: Depos
     refPoints: refPoints.toString(),
     totalPoints: totalPoints.toString(),
   };
+}
+
+export async function getChainAndAssetFromText(chainName: string, assetName: string) {
+  const chains = {
+    mainnet: mainnet,
+    ethereum: mainnet,
+    arbitrum: arbitrum,
+    sepolia: sepolia,
+    arbitrumSepolia: arbitrumSepolia
+  };
+
+  if (!(chainName in chains)) {
+    throw new Error(`Invalid chain name: ${chainName}`);
+  }
+
+  const chain: Chain = chains[chainName];
+  let assetAddress: string;
+  // Fetch the merged configuration settings for the current chain
+  const config: MergedConfiguration = getMergedConfig(chain.id);
+  if (assetName.toLowerCase() == 'deth') {
+    assetAddress = config.contracts.DETH
+  } else {
+    throw new Error(`Invalid deposit asset name: ${assetName}`);
+  }
+
+  return { chain, assetAddress };
 }

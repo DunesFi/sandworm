@@ -4,6 +4,7 @@ import {
 } from 'lilybird';
 import { handlePurgeInteraction } from './handlers/purge';
 import { handlePingInteraction } from './handlers/ping';
+import { handleDepositInteraction } from './handlers/deposit';
 
 export const handler = new CommandManager();
 
@@ -59,4 +60,28 @@ handler.addCommand({
     ]
   },
   handlePurgeInteraction
+);
+
+
+
+handler.addCommand({
+  name: "deposits",
+  description: "Logs AssetDeposit events to database",
+  options: [
+    {
+      name: "asset",
+      description: "LRT asset name users recieve when they deposit",
+      type: ApplicationCommandOptionType.STRING,
+      required: true
+    },
+    {
+      name: "chain",
+      description: "Chain name to track events from",
+      type: ApplicationCommandOptionType.STRING,
+      required: true
+    }
+
+  ]
+},
+  handleDepositInteraction
 );
