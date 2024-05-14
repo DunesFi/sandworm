@@ -2,6 +2,7 @@ import { SupabaseClient } from '@supabase/supabase-js';
 import { Deposit, DepositorInfo, DepositorInfoJson } from '../spices/actions/types';
 import { calculateDETHDepositSpices, getTotalDETHDeposit } from '../spices/helpers';
 import { ChainConfiguration } from '../config/chains';
+import { PublicClient } from 'viem';
 
 export type DatabaseBlockData = {
   id: string,
@@ -213,4 +214,60 @@ export async function processTransferLogs(supabase: SupabaseClient, config: Chai
   }
 
   return lastBlockNumber;
+}
+
+
+export async function fetchLastTransferBlock(supabase: SupabaseClient, chainId: number, asset: string) {
+  const { data, error } = await supabase
+    .from("transfers")
+    .select("blockNumber")
+    .eq("chainId", chainId)
+    .eq("asset", asset)
+    .order("blockNumber", { ascending: false })  // Order by blockNumber in descending order
+    .limit(1);  // Limit to only one result
+
+  if (error) {
+    throw new Error("❌ Failed to fetch last processed block");
+  }
+
+  return data || [];
+}
+
+
+
+export async function addTransferEventsToDB(supabase: SupabaseClient, client: PublicClient, config: ChainConfiguration, logs: any, asset: string) {
+
+  const table_name = "transfers";
+
+  for (const log of logs) {
+    const args = log.args;
+    const blockNumber = BigInt(log.blockNumber);
+    const id = log.transactionHash.concat('-').concat(log.logIndex.toString());
+    const timestamp = (await client.getBlock({ blockNumber: blockNumber })).timestamp;
+
+    const newTransfer = {
+      id: id,
+      from: args.from,
+      to: args.to,
+      amount: Number(args.value),
+      amountRaw: args.value.toString(),
+      blockNumber: Number(blockNumber),
+      timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+      chainId: Number(config.chainId),
+      asset: asset
+    }
+    try {
+      const { data: insertData, error: insertError } = await supabase.from(table_name).insert(newTransfer);
+      if (insertError) {
+        console.error("❌ Error inserting new transfer:", insertError.message);
+      }
+    } catch (error) {
+      console.error("❌ Error during transfer insert:", error);
+    }
+
+
+  }
+
+
+
 }
