@@ -234,6 +234,22 @@ export async function fetchLastTransferBlock(supabase: SupabaseClient, chainId: 
 }
 
 
+export async function fetchLastDepositBlock(supabase: SupabaseClient, chainId: number, asset: string) {
+  const { data, error } = await supabase
+    .from("assetDeposits")
+    .select("blockNumber")
+    .eq("chainId", chainId)
+    .eq("asset", asset)
+    .order("blockNumber", { ascending: false })  // Order by blockNumber in descending order
+    .limit(1);  // Limit to only one result
+
+  if (error) {
+    throw new Error("❌ Failed to fetch last deposit block");
+  }
+
+  return data || [];
+}
+
 
 export async function addTransferEventsToDB(supabase: SupabaseClient, client: PublicClient, config: ChainConfiguration, logs: any, asset: string) {
 
@@ -263,6 +279,44 @@ export async function addTransferEventsToDB(supabase: SupabaseClient, client: Pu
       }
     } catch (error) {
       console.error("❌ Error during transfer insert:", error);
+    }
+
+
+  }
+
+}
+
+export async function addDETHDepositEventsToDB(supabase: SupabaseClient, client: PublicClient, config: ChainConfiguration, logs: any, asset: string) {
+
+  const table_name = "assetDeposits";
+
+  for (const log of logs) {
+    const args = log.args;
+    const blockNumber = BigInt(log.blockNumber);
+    const id = log.transactionHash.concat('-').concat(log.logIndex.toString());
+    const timestamp = (await client.getBlock({ blockNumber: blockNumber })).timestamp;
+
+    const newDeposit = {
+      id: id,
+      depositor: args.depositor,
+      depositAsset: args.asset,
+      depositAmount: Number(args.depositAmount),
+      amountToMint: Number(args.dETHMintAmount),
+      amountToMintRaw: args.dETHMintAmount.toString(),
+      referralId: args.referralId,
+      blockNumber: Number(blockNumber),
+      timestamp: new Date(Number(timestamp) * 1000).toISOString(),
+      chainId: Number(config.chainId),
+      asset: asset
+    }
+
+    try {
+      const { data: insertData, error: insertError } = await supabase.from(table_name).insert(newDeposit);
+      if (insertError) {
+        console.error("❌ Error inserting new deposit:", insertError.message);
+      }
+    } catch (error) {
+      console.error("❌ Error during deposit insert:", error);
     }
 
 

@@ -5,7 +5,7 @@ export async function getAssetTransfersLogs(lastBlock: bigint, publicClient: any
     const filter = await publicClient.createEventFilter({
         address: asset,
         event: parseAbiItem("event Transfer(address indexed from, address indexed to, uint256 value)"),
-        fromBlock: lastBlock + 1n,
+        fromBlock: lastBlock,
     });
 
     return await publicClient.getFilterLogs({ filter });
