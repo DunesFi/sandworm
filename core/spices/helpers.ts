@@ -3,6 +3,7 @@ import { DepositorInfoJson } from './actions/types';
 import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from '../config/spices';
 import { sepolia, mainnet, arbitrum, arbitrumSepolia, Chain } from 'viem/chains';
 import { MergedConfiguration, getMergedConfig } from '../config';
+import { supportedChains } from '../config/chains';
 
 export function calculateDETHDepositSpices(dETHMintAmount: bigint, isRef: boolean): bigint {
   if (isRef) {
@@ -30,19 +31,13 @@ export function getTotalDETHDeposit(deposit1: DepositorInfoJson, deposit2: Depos
 }
 
 export async function getChainAndAssetFromText(chainName: string, assetName: string) {
-  const chains = {
-    mainnet: mainnet,
-    ethereum: mainnet,
-    arbitrum: arbitrum,
-    sepolia: sepolia,
-    arbitrumSepolia: arbitrumSepolia
-  };
 
-  if (!(chainName in chains)) {
+
+  if (!(chainName in supportedChains)) {
     throw new Error(`Invalid chain name: ${chainName}`);
   }
 
-  const chain: Chain = chains[chainName];
+  const chain: Chain = supportedChains[chainName];
   let assetAddress: string;
   // Fetch the merged configuration settings for the current chain
   const config: MergedConfiguration = getMergedConfig(chain.id);

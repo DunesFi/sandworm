@@ -1,3 +1,5 @@
+import { sepolia, mainnet, arbitrum, arbitrumSepolia, Chain } from 'viem/chains';
+
 export interface ChainConfiguration {
   deployBlock: bigint;
   rpcUrl: string | undefined;
@@ -34,6 +36,14 @@ const chainConfig: ChainConfigurations = {
     networkName: "arbitrumSepolia",
     chainId: 421614,
   },
+};
+
+export const supportedChains = {
+  mainnet: mainnet,
+  ethereum: mainnet,
+  arbitrum: arbitrum,
+  sepolia: sepolia,
+  arbitrumSepolia: arbitrumSepolia
 };
 
 export default chainConfig;
