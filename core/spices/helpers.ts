@@ -49,3 +49,12 @@ export async function getChainAndAssetFromText(chainName: string, assetName: str
 
   return { chain, assetAddress };
 }
+
+
+export async function getChainFromText(chainName: string) {
+  if (!(chainName in supportedChains)) {
+    throw new Error(`Invalid chain name: ${chainName}`);
+  }
+  const chain: Chain = supportedChains[chainName];
+  return { chain };
+}
