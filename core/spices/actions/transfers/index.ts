@@ -17,8 +17,7 @@ import { getChainAndAssetFromText } from '../../helpers';
  * @param {string} chain - The  chain name to query for transfer events.
  * @param {string} asset - The asset name for which to save transfer events.
  */
-async function saveTransferEvents(chainName: string, assetName: string) {
-
+export async function saveTransferEvents(chainName: string, assetName: string) {
     const { chain, assetAddress: asset } = await getChainAndAssetFromText(chainName, assetName);
 
     // Create a Supabase client using the configured URL and Key

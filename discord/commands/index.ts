@@ -5,6 +5,7 @@ import {
 import { handlePurgeInteraction } from './handlers/purge';
 import { handlePingInteraction } from './handlers/ping';
 import { handleDepositInteraction } from './handlers/deposit';
+import { handleSnapShotInteraction } from './handlers/snapshots';
 
 export const handler = new CommandManager();
 
@@ -65,23 +66,48 @@ handler.addCommand({
 
 
 handler.addCommand({
-  name: "deposits",
-  description: "Logs AssetDeposit events to database",
+  name: "snapshot",
+  description: "Record specific blockchain events to a database",
   options: [
     {
-      name: "asset",
-      description: "LRT asset name users recieve when they deposit",
-      type: ApplicationCommandOptionType.STRING,
-      required: true
+      name: "transfers",
+      description: "Record Transfer events for a specified asset",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "asset",
+          description: "The asset for which transfer events will be tracked",
+          type: ApplicationCommandOptionType.STRING,
+          required: true
+        },
+        {
+          name: "chain",
+          description: "The blockchain network",
+          type: ApplicationCommandOptionType.STRING,
+          required: true
+        },
+      ]
     },
     {
-      name: "chain",
-      description: "Chain name to track events from",
-      type: ApplicationCommandOptionType.STRING,
-      required: true
+      name: "deposits",
+      description: "Record AssetDeposit events for a specified LRT asset",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "asset",
+          description: "The LRT asset for which deposit events will be tracked",
+          type: ApplicationCommandOptionType.STRING,
+          required: true
+        },
+        {
+          name: "chain",
+          description: "The blockchain network",
+          type: ApplicationCommandOptionType.STRING,
+          required: true
+        },
+      ]
     }
-
   ]
 },
-  handleDepositInteraction
+  handleSnapShotInteraction
 );
