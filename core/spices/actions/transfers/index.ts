@@ -4,10 +4,8 @@ import {
     addTransferEventsToDB,
     fetchLastTransferBlock
 } from '../../../database/helpers';
-import { Deposit } from '../types';
 import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
 import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
-import { sepolia, mainnet, } from 'viem/chains';
 import { getAssetTransfersLogs } from './helpers';
 import { getChainAndAssetFromText } from '../../helpers';
 

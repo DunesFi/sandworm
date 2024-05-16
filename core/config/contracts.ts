@@ -31,3 +31,11 @@ const contractConfig: ContractConfigurations = {
 };
 
 export default contractConfig;
+
+// chain list Object.keys(supportedTokens)
+//
+export const supportedTokens = {
+  'mainnet': {
+    'DETH': contractConfig[1].DETH,
+  }
+};

@@ -4,6 +4,7 @@ import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from '../config/spices';
 import { sepolia, mainnet, arbitrum, arbitrumSepolia, Chain } from 'viem/chains';
 import { MergedConfiguration, getMergedConfig } from '../config';
 import { supportedChains } from '../config/chains';
+import { supportedTokens } from '../config/contracts';
 
 export function calculateDETHDepositSpices(dETHMintAmount: bigint, isRef: boolean): bigint {
   if (isRef) {
@@ -32,29 +33,43 @@ export function getTotalDETHDeposit(deposit1: DepositorInfoJson, deposit2: Depos
 
 export async function getChainAndAssetFromText(chainName: string, assetName: string) {
 
+  const { chain } = getChainFromText(chainName);
 
-  if (!(chainName in supportedChains)) {
-    throw new Error(`Invalid chain name: ${chainName}`);
-  }
-
-  const chain: Chain = supportedChains[chainName];
-  let assetAddress: string;
   // Fetch the merged configuration settings for the current chain
   const config: MergedConfiguration = getMergedConfig(chain.id);
-  if (assetName.toLowerCase() == 'deth') {
-    assetAddress = config.contracts.DETH
-  } else {
+  let assetAddress = supportedTokens[chainName][assetName]
+
+  if (!assetAddress) {
     throw new Error(`Invalid deposit asset name: ${assetName}`);
   }
 
   return { chain, assetAddress };
 }
 
-
-export async function getChainFromText(chainName: string) {
+export function getChainFromText(chainName: string) {
   if (!(chainName in supportedChains)) {
     throw new Error(`Invalid chain name: ${chainName}`);
   }
   const chain: Chain = supportedChains[chainName];
   return { chain };
 }
+
+export function getTokenAddressesForName(tokenName: string): string[] {
+  let addresses: string[] = [];
+
+  tokenName = tokenName.toUpperCase()
+  for (const chain in supportedTokens) {
+    const tokens = supportedTokens[chain];
+    if (tokens[tokenName]) {  // Check if the token name exists in the current chain's configuration
+      addresses.push(tokens[tokenName]);
+    }
+  }
+  return addresses;
+}
+
+export function validateChainName(chainName: string,) {
+  if (!supportedTokens[chainName]) {
+    throw new Error(`Chain '${chainName}' is not supported.`);
+  }
+}
+

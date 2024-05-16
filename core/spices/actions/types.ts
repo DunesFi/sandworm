@@ -57,3 +57,13 @@ export interface AssetDeposits {
   chainId: number,
   asset: `0x${string}` | string;
 }
+
+
+export interface DepositSpice {
+  asset: `0x${string}` | string;
+  chainId: number,
+  totalMintAmount: bigint;
+  mintPoints: bigint;
+  totalReferred: bigint;
+  refPoints: bigint;
+}
