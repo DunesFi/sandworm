@@ -19,6 +19,7 @@ export async function getDepositSpicesForChainAndAsset(
     chainId: number,
     asset: string,
     config: SpiceConfiguration,
+    assetName:string
 ): Promise<DepositSpice> {
 
     try {
@@ -40,8 +41,8 @@ export async function getDepositSpicesForChainAndAsset(
             .eq("chainId", chainId)
             .eq("asset", asset);
 
-        if (depositError) {
-            console.error("❌ Error failed to fetch ref deposits:", depositError.message);
+        if (refError) {
+            console.error("❌ Error failed to fetch ref deposits:", refError.message);
         }
 
         // Initialize totals
@@ -62,7 +63,8 @@ export async function getDepositSpicesForChainAndAsset(
             totalMintAmount: totalDepositAmount,
             mintPoints: mintPoints,
             totalReferred: totalRefAmount,
-            refPoints: refPoints
+            refPoints: refPoints,
+            assetName:assetName
         };
 
     } catch (error) {

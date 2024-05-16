@@ -5,60 +5,61 @@ import {
 import { handlePurgeInteraction } from './handlers/purge';
 import { handlePingInteraction } from './handlers/ping';
 import { handleSnapShotInteraction } from './handlers/snapshots';
+import { handleVerifyInteraction } from './handlers/verify';
 
 export const handler = new CommandManager();
 
 handler.addCommand({
-    name: "ping",
-    description: "pong"
-  },
+  name: "ping",
+  description: "pong"
+},
   handlePingInteraction
 );
 
 handler.addCommand({
-    name: "purge",
-    description: "Purge all or specific actions logs from database",
-    options: [
-      {
-        name: "deposits",
-        description: "Purge deposits from database",
-        type: ApplicationCommandOptionType.SUB_COMMAND,
-        options: [
-          {
-            name: "asset",
-            description: "Asset address to purge balances of",
-            type: ApplicationCommandOptionType.STRING,
-            required: false // wipe all assets if not specified
-          },
-          {
-            name: "chain",
-            description: "Chain to purge balances from",
-            type: ApplicationCommandOptionType.STRING,
-            required: false // wipe all chains if not specified
-          },
-        ]
-      },
-      {
-        name: "transfers",
-        description: "Purge transfers from database",
-        type: ApplicationCommandOptionType.SUB_COMMAND,
-        options: [
-          {
-            name: "asset",
-            description: "Asset address to purge balances of",
-            type: ApplicationCommandOptionType.STRING,
-            required: false // wipe all assets if not specified
-          },
-          {
-            name: "chain",
-            description: "Chain to purge balances from",
-            type: ApplicationCommandOptionType.STRING,
-            required: false // wipe all chains if not specified
-          },
-        ]
-      }
-    ]
-  },
+  name: "purge",
+  description: "Purge all or specific actions logs from database",
+  options: [
+    {
+      name: "deposits",
+      description: "Purge deposits from database",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "asset",
+          description: "Asset address to purge balances of",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // wipe all assets if not specified
+        },
+        {
+          name: "chain",
+          description: "Chain to purge balances from",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // wipe all chains if not specified
+        },
+      ]
+    },
+    {
+      name: "transfers",
+      description: "Purge transfers from database",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "asset",
+          description: "Asset address to purge balances of",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // wipe all assets if not specified
+        },
+        {
+          name: "chain",
+          description: "Chain to purge balances from",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // wipe all chains if not specified
+        },
+      ]
+    }
+  ]
+},
   handlePurgeInteraction
 );
 
@@ -109,4 +110,39 @@ handler.addCommand({
   ]
 },
   handleSnapShotInteraction
+);
+
+
+handler.addCommand({
+  name: "verify",
+  description: "Retrieve user spices for specific actions",
+  options: [
+    {
+      name: "deposits",
+      description: "Retrieve spice amount for asset deposits",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "user",
+          description: "User address for which to calculate spices",
+          type: ApplicationCommandOptionType.STRING,
+          required: true // Mandatory: User address must be provided
+        },
+        {
+          name: "asset",
+          description: "Specific asset address to query deposits",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all tokens will be considered
+        },
+        {
+          name: "chain",
+          description: "Chain to consider for the query",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all chains will be included
+        },
+      ]
+    }
+  ]
+},
+  handleVerifyInteraction
 );

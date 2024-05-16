@@ -37,10 +37,9 @@ export async function verifyDepositPoints(
     for (const chainNm of chainNames) {
         for (const assetNm of assetNames) {
             if (supportedTokens[chainNm] && supportedTokens[chainNm][assetNm]) {
-
                 const { chain, assetAddress: assetAddress } = await getChainAndAssetFromText(chainNm, assetNm);
                 const spiceConf = spiceConfig[assetNm];  // Ensure spiceConfig is defined properly to use here
-                const result = await getDepositSpicesForChainAndAsset(supabase, userAddress, chain.id, assetAddress, spiceConf);
+                const result = await getDepositSpicesForChainAndAsset(supabase, userAddress, chain.id, assetAddress, spiceConf, assetNm);
                 if (result.totalMintAmount != 0n || result.totalReferred != 0n) depositSpices.push(result);
             }
         }
