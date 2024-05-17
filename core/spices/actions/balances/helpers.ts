@@ -12,8 +12,6 @@ export async function processDETHBlockBalances(
   const dayString = today.toISOString().slice(0, 10);
   const table_name = `${config.networkName}_balances`;
 
-  console.log(table_name);
-
   // Fetch the latest balance date for the specific user and chain
   let { data: latestBalances, error: fetchError } = await supabase
     .from(table_name)

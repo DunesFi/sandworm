@@ -45,7 +45,6 @@ export async function saveAssetDepositEvents(chainName?: string, assetName?: str
                 let startBlock = 0n; // Initialize the starting block number
                 // Check if any blocks have been processed before, and determine the starting block number
                 if (processedBlocks.length === 0) {
-                    console.log("No deposit records found. Starting from deploy block.");
                     startBlock = BigInt(config.deployBlock); // Start from deployment block if no records are found
                 } else {
                     const lastProcessedBlock = processedBlocks[0].blockNumber;
