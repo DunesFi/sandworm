@@ -73,3 +73,37 @@ export function validateChainName(chainName: string,) {
   }
 }
 
+export function validateAssetName(chainNames: string[], assetName: string) {
+  let isValid = false
+  if (assetName) {
+    for (const chainNm of chainNames) {
+      if (supportedTokens[chainNm][assetName]) isValid = true
+    }
+  }
+  if (!isValid) {
+    throw new Error(`Asset name '${assetName}' is not supported for any chain.`);
+  }
+}
+
+export function processInputNames(chainName?: string, assetName?: string): { chainNames: string[], assetNames: string[], } {
+
+  // Validate chain name if provided
+  if (chainName) validateChainName(chainName);
+
+  let assetNames: string[] = assetName ? [assetName.toUpperCase()] : [];
+  let chainNames: string[] = chainName ? [chainName.toLowerCase()] : Object.keys(supportedTokens);
+
+  if (assetName) validateAssetName(chainNames, assetName.toUpperCase())
+
+  // If no assetName is provided, we need all assets for the specified chains
+  if (!assetName) {
+    chainNames.forEach(chain => {
+      Object.keys(supportedTokens[chain]).forEach(token => {
+        if (assetNames.indexOf(token) === -1) {
+          assetNames.push(token.toUpperCase());
+        }
+      });
+    });
+  }
+  return { chainNames,assetNames  }
+}

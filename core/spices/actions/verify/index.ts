@@ -2,7 +2,7 @@ import { Chain, createPublicClient, http } from "viem";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_KEY, SUPABASE_URL } from "../../../config/database";
 import { getMergedConfig, MergedConfiguration, validateConfig } from "../../../config";
-import { getChainAndAssetFromText, getTokenAddressesForName, validateChainName } from "../../helpers";
+import { getChainAndAssetFromText, getTokenAddressesForName, processInputNames, validateAssetName, validateChainName } from "../../helpers";
 import spiceConfig, { SpiceConfiguration } from "../../../config/spices";
 import { getDepositSpicesForChainAndAsset, getHolderSpicesForChainAndAsset } from "./helpers";
 import { DepositSpice, HolderSpice } from "../types";
@@ -14,24 +14,11 @@ export async function verifyDepositPoints(
     assetName?: string,
 ): Promise<DepositSpice[]> {
 
-    if (chainName) validateChainName(chainName);
-    let assetNames: string[] = assetName ? [assetName.toUpperCase()] : [];
-    let chainNames: string[] = chainName ? [chainName.toLowerCase()] : Object.keys(supportedTokens);
-
+    let { chainNames, assetNames } = processInputNames(chainName, assetName)
     // Create a Supabase client using the configured URL and Key
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-    const depositSpices: DepositSpice[] = [];
 
-    // If no assetName is provided, we need all assets for the specified chains
-    if (!assetName) {
-        chainNames.forEach(chain => {
-            Object.keys(supportedTokens[chain]).forEach(token => {
-                if (assetNames.indexOf(token) === -1) {
-                    assetNames.push(token.toUpperCase());
-                }
-            });
-        });
-    }
+    const depositSpices: DepositSpice[] = [];
 
     // Handling different conditions based on provided inputs
     for (const chainNm of chainNames) {
@@ -53,23 +40,9 @@ export async function verifyHolderPoints(
     assetName?: string,
 ): Promise<HolderSpice[]> {
 
-    if (chainName) validateChainName(chainName);
-    let assetNames: string[] = assetName ? [assetName.toUpperCase()] : [];
-    let chainNames: string[] = chainName ? [chainName.toLowerCase()] : Object.keys(supportedTokens);
-
+    let { chainNames, assetNames } = processInputNames(chainName, assetName)
     // Create a Supabase client using the configured URL and Key
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-    // If no assetName is provided, we need all assets for the specified chains
-    if (!assetName) {
-        chainNames.forEach(chain => {
-            Object.keys(supportedTokens[chain]).forEach(token => {
-                if (assetNames.indexOf(token) === -1) {
-                    assetNames.push(token.toUpperCase());
-                }
-            });
-        });
-    }
 
     const holderSpices: HolderSpice[] = [];
     // Handling different conditions based on provided inputs

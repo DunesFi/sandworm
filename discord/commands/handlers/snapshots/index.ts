@@ -20,21 +20,22 @@ export async function handleSnapShotInteraction(client: Client<Transformers, Cac
   const chainOption = subCommand?.options?.find(opt => opt.name === 'chain');
 
   // Extract values
-  const assetName = assetOption?.value;
-  const chainName = chainOption?.value;
+  let assetName = assetOption?.value ? assetOption?.value.toString() : undefined;
+  let chainName = chainOption?.value ? chainOption?.value.toString() : undefined;
 
   // Validate asset and chain
-  if (!eventName || !assetName || !chainName) {
+  if (!eventName) {
     throw new Error('Invalid or missing input.');
   }
 
   try {
     if (eventName == 'deposits') {
-      await saveAssetDepositEvents(chainName.toString(), assetName.toString(),)
+      await saveAssetDepositEvents(chainName, assetName)
     } else {
-      await saveTransferEvents(chainName.toString(), assetName.toString(),)
+      await saveTransferEvents(chainName, assetName)
     }
-
+    if (!chainName) chainName = 'ALL CHAINS'
+    if (!assetName) assetName = 'ALL TOKENS'
     // Send the actual response after processing
     await client.rest.editOriginalInteractionResponse(client.application.id, interaction.token, {
       content: `Successfully recorded ${eventName} event for ${assetName} on ${chainName}.`

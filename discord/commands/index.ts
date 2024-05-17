@@ -78,13 +78,13 @@ handler.addCommand({
           name: "asset",
           description: "The asset name for which transfer events will be tracked",
           type: ApplicationCommandOptionType.STRING,
-          required: true
+          required: false
         },
         {
           name: "chain",
           description: "The blockchain network",
           type: ApplicationCommandOptionType.STRING,
-          required: true
+          required: false
         },
       ]
     },
@@ -97,13 +97,13 @@ handler.addCommand({
           name: "asset",
           description: "The LRT asset name for which deposit events will be tracked",
           type: ApplicationCommandOptionType.STRING,
-          required: true
+          required: false
         },
         {
           name: "chain",
           description: "The blockchain network",
           type: ApplicationCommandOptionType.STRING,
-          required: true
+          required: false
         },
       ]
     }
