@@ -17,7 +17,7 @@ import { getChainAndAssetFromText } from '../../helpers';
  */
 export async function saveAssetDepositEvents(chainName: string, assetName: string) {
 
-    const { chain, assetAddress: asset } = await getChainAndAssetFromText(chainName, assetName);
+    const { chain, assetAddress: asset } = await getChainAndAssetFromText(chainName.toLowerCase(), assetName.toUpperCase());
     // Create a Supabase client using the configured URL and Key
     const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 

@@ -23,7 +23,7 @@ const spiceConfig: SpiceConfigurations = {
     DETH: {
         BASE_MINT_AMOUNT: 10n ** 18n,
         BASE_MINT_POINTS: 1_000n,
-        HOLD_AMOUNT: 1n ** 18n,
+        HOLD_AMOUNT: 10n ** 18n,
         HOLD_POINTS: 100n,
         REF_SHARE: 10n //%10
     }

@@ -141,6 +141,31 @@ handler.addCommand({
           required: false // Optional: If not provided, all chains will be included
         },
       ]
+    },
+    {
+      name: "balances",
+      description: "Retrieve spice amount for asset holders",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "user",
+          description: "User address for which to calculate spices",
+          type: ApplicationCommandOptionType.STRING,
+          required: true // Mandatory: User address must be provided
+        },
+        {
+          name: "asset",
+          description: "Specific asset address to query balances",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all tokens will be considered
+        },
+        {
+          name: "chain",
+          description: "Chain to consider for the query",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all chains will be included
+        },
+      ]
     }
   ]
 },

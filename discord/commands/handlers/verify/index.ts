@@ -1,5 +1,5 @@
 import { CacheManagerStructure, Client, Interaction, InteractionCallbackType, Transformers } from 'lilybird';
-import { verifyDepositPoints } from '../../../../core/spices/actions/verify';
+import { verifyDepositPoints, verifyHolderPoints } from '../../../../core/spices/actions/verify';
 
 export async function handleVerifyInteraction(client: Client<Transformers, CacheManagerStructure>, interaction: Interaction.GuildApplicationCommandInteractionStructure) {
 
@@ -29,17 +29,32 @@ export async function handleVerifyInteraction(client: Client<Transformers, Cache
   }
 
   try {
-    // Execute the verify function
-    const depositSpices = await verifyDepositPoints(user.toString(), chainName, assetName);
+    if (eventName == 'deposits') {
+      // Execute the verify function
+      const depositSpices = await verifyDepositPoints(user.toString(), chainName, assetName);
 
-    // Format the response message with depositSpices results
-    const responseMessage = `Verification for ${eventName} completed:\n` +
-      depositSpices.map(spice => `chain: ${spice.chainId}, ${spice.assetName}: ${spice.mintPoints} mint points, ${spice.refPoints} referral points`).join('\n');
+      // Format the response message with depositSpices results
+      const responseMessage = `Verification for ${eventName} completed:\n` +
+        depositSpices.map(spice => `chain: ${spice.chainId}, ${spice.assetName}: ${spice.mintPoints} mint points, ${spice.refPoints} referral points`).join('\n');
 
-    // Send the actual response after processing
-    await client.rest.editOriginalInteractionResponse(client.application.id, interaction.token, {
-      content: responseMessage
-    });
+      // Send the actual response after processing
+      await client.rest.editOriginalInteractionResponse(client.application.id, interaction.token, {
+        content: responseMessage
+      });
+    } else {
+      // Execute the verify function
+      const depositSpices = await verifyHolderPoints(user.toString(), chainName, assetName);
+
+      // Format the response message with depositSpices results
+      const responseMessage = `Verification for ${eventName} completed:\n` +
+        depositSpices.map(spice => `chain: ${spice.chainId}, ${spice.assetName}: ${spice.holdPoints} hold points`).join('\n');
+
+      // Send the actual response after processing
+      await client.rest.editOriginalInteractionResponse(client.application.id, interaction.token, {
+        content: responseMessage
+      });
+
+    }
 
   } catch (error) {
     console.error(`Error handling verify interaction: ${error.message}`);

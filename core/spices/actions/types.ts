@@ -68,3 +68,19 @@ export interface DepositSpice {
   totalReferred: bigint;
   refPoints: bigint;
 }
+
+export interface HolderSpice {
+  asset: `0x${string}` | string;
+  assetName: string,
+  chainId: number,
+  holdPoints: bigint;
+}
+
+export interface BalanceChange {
+  balance: bigint;
+  timestamp: number;  // Assuming timestamp is a Unix timestamp in seconds
+}
+
+export interface UserBalances {
+  [address: string]: BalanceChange[];
+}
