@@ -1,7 +1,7 @@
 import chainConfig, { ChainConfiguration } from './chains';
 import contractConfig, { ContractConfiguration } from './contracts';
 import { privateKeyToAccount } from 'viem/accounts'
-import { Chain, Hex, WalletClient, createWalletClient, http } from 'viem'
+import { Chain, Hex, PrivateKeyAccount, WalletClient, createWalletClient, http } from 'viem'
 
 export type MergedConfiguration = ChainConfiguration & { contracts: ContractConfiguration };
 
@@ -53,7 +53,7 @@ export function validateAsset(config: MergedConfiguration, asset: string): boole
   return asset in config.contracts;
 }
 
-export async function getAccount(chain: Chain): Promise<{ client: WalletClient, account: Hex }> {
+export async function getAccount(chain: Chain): Promise<{ client: WalletClient, pkAccount: PrivateKeyAccount }> {
 
   const privateKey = process.env.DEPLOYER_PRIVATE_KEY;
   if (!privateKey) {
@@ -67,7 +67,6 @@ export async function getAccount(chain: Chain): Promise<{ client: WalletClient, 
     transport: http()
   })
 
-  const [account] = await client.getAddresses();
-  return { client, account };
+  return { client, pkAccount };
 
 }
