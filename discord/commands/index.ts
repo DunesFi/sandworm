@@ -6,6 +6,7 @@ import { handlePurgeInteraction } from './handlers/purge';
 import { handlePingInteraction } from './handlers/ping';
 import { handleSnapShotInteraction } from './handlers/snapshots';
 import { handleVerifyInteraction } from './handlers/verify';
+import { handleUpdatePriceInteraction } from './handlers/updatePrice';
 
 export const handler = new CommandManager();
 
@@ -170,4 +171,33 @@ handler.addCommand({
   ]
 },
   handleVerifyInteraction
+);
+
+
+handler.addCommand({
+  name: "update",
+  description: "Update contract for spesific actions",
+  options: [
+    {
+      name: "price",
+      description: "Update price ",
+      type: ApplicationCommandOptionType.SUB_COMMAND,
+      options: [
+        {
+          name: "asset",
+          description: "Specific asset address to update  price",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all tokens will be considered
+        },
+        {
+          name: "chain",
+          description: "Chain to consider for the query",
+          type: ApplicationCommandOptionType.STRING,
+          required: false // Optional: If not provided, all chains will be included
+        },
+      ]
+    }
+  ]
+},
+  handleUpdatePriceInteraction
 );

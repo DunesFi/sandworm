@@ -5,10 +5,10 @@ import {
   fetchLastProcessedBlocks,
   initializeLastProcessedBlock,
   processTransferLogs, updateLastProcessedBlock
-} from '../../../database/helpers';
+} from '../../../../database/helpers';
 import { getDETHTransfersLogs, processDETHBlockBalances } from './helpers';
-import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
-import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
+import { SUPABASE_KEY, SUPABASE_URL } from '../../../../config/database';
+import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../../config';
 
 async function snapshotDETHBalances(chain: Chain) {
   let currentChain = chain;

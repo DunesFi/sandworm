@@ -1,6 +1,6 @@
 import { SupabaseClient } from '@supabase/supabase-js';
 import { erc20Abi, parseAbiItem, PublicClient } from 'viem';
-import { MergedConfiguration } from '../../../config';
+import { MergedConfiguration } from '../../../../config';
 
 export async function processDETHBlockBalances(
   supabase: SupabaseClient,

@@ -1,6 +1,6 @@
 import { parseAbiItem, PublicClient } from 'viem';
-import { MergedConfiguration } from '../../../config';
-import { Deposit } from '../types';
+import { MergedConfiguration } from '../../../../config';
+import { Deposit } from '../../types';
 
 export async function getDETHDepositsLogs(lastBlock: bigint, client: PublicClient, config: MergedConfiguration) {
   const filter = await client.createEventFilter({

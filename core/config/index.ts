@@ -1,5 +1,7 @@
 import chainConfig, { ChainConfiguration } from './chains';
 import contractConfig, { ContractConfiguration } from './contracts';
+import { privateKeyToAccount } from 'viem/accounts'
+import { Chain, Hex, WalletClient, createWalletClient, http } from 'viem'
 
 export type MergedConfiguration = ChainConfiguration & { contracts: ContractConfiguration };
 
@@ -30,6 +32,10 @@ export function validateConfig(config: MergedConfiguration): boolean {
     return false;
   }
 
+  if (!config.contracts.LRTOracle || config.contracts.LRTOracle === "0x") {
+    console.error(`Invalid LRTOracle address for ${config.networkName}`);
+    return false;
+  }
   if (!config.deployBlock) {
     console.error(`Invalid deploy block for ${config.networkName}`);
     return false;
@@ -45,4 +51,23 @@ export function validateConfig(config: MergedConfiguration): boolean {
 
 export function validateAsset(config: MergedConfiguration, asset: string): boolean {
   return asset in config.contracts;
+}
+
+export async function getAccount(chain: Chain): Promise<{ client: WalletClient, account: Hex }> {
+
+  const privateKey = process.env.DEPLOYER_PRIVATE_KEY;
+  if (!privateKey) {
+    throw Error("FATAL: Missing account PK!");
+  }
+  const pkAccount = privateKeyToAccount(privateKey as '0x${string}');
+
+  const client = createWalletClient({
+    account: pkAccount,
+    chain: chain,
+    transport: http()
+  })
+
+  const [account] = await client.getAddresses();
+  return { client, account };
+
 }

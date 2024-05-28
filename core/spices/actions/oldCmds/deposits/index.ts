@@ -6,10 +6,10 @@ import {
   fetchLastProcessedBlocks,
   initializeLastProcessedBlock,
   updateDepositTable, updateLastProcessedBlock
-} from '../../../database/helpers';
-import { Deposit } from '../types';
-import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
-import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../config';
+} from '../../../../database/helpers';
+import { Deposit } from '../../types';
+import { SUPABASE_KEY, SUPABASE_URL } from '../../../../config/database';
+import { getMergedConfig, MergedConfiguration, validateConfig } from '../../../../config';
 
 async function snapshotDETHDeposits(chain: Chain) {
   let currentChain = chain;
