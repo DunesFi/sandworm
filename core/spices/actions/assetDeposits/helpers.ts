@@ -6,7 +6,7 @@ export async function getAssetDepositLogs(lastBlock: bigint, publicClient: any, 
     const filter = await publicClient.createEventFilter({
         address: config.contracts.DepositPool as `0x${string}`,
         event: parseAbiItem(
-            "event AssetDeposit(address indexed depositor, address indexed asset, uint256 depositAmount, uint256 dETHMintAmount, string referralId)",
+            "event AssetDeposit(address indexed depositor, address indexed asset, uint256 depositAmount, uint256 dAssetAmountToMint, string referralId)",
         ),
         fromBlock: lastBlock,
     });

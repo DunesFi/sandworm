@@ -1,4 +1,4 @@
-// Function to calculate total points based on dETHMintAmount
+// Function to calculate total points based on dAssetAmountToMint
 import { DepositorInfoJson } from './actions/types';
 import { BASE_AMOUNT, BASE_POINTS, REF_SHARE } from '../config/spices';
 import { sepolia, mainnet, arbitrum, arbitrumSepolia, Chain } from 'viem/chains';
@@ -6,11 +6,11 @@ import { MergedConfiguration, getMergedConfig } from '../config';
 import { supportedChains } from '../config/chains';
 import { supportedTokens } from '../config/contracts';
 
-export function calculateDETHDepositSpices(dETHMintAmount: bigint, isRef: boolean): bigint {
+export function calculateDETHDepositSpices(dAssetAmountToMint: bigint, isRef: boolean): bigint {
   if (isRef) {
-    return (dETHMintAmount * BASE_POINTS * REF_SHARE) / (BASE_AMOUNT * 100n);
+    return (dAssetAmountToMint * BASE_POINTS * REF_SHARE) / (BASE_AMOUNT * 100n);
   }
-  return (dETHMintAmount * BASE_POINTS) / BASE_AMOUNT;
+  return (dAssetAmountToMint * BASE_POINTS) / BASE_AMOUNT;
 }
 
 export function getTotalDETHDeposit(deposit1: DepositorInfoJson, deposit2: DepositorInfoJson): DepositorInfoJson {
@@ -105,5 +105,5 @@ export function processInputNames(chainName?: string, assetName?: string): { cha
       });
     });
   }
-  return { chainNames,assetNames  }
+  return { chainNames, assetNames }
 }

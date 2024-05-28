@@ -5,7 +5,7 @@ export interface Deposit {
   depositor: `0x${string}` | string;
   asset: `0x${string}` | string;
   depositAmount: bigint;
-  dETHMintAmount: bigint;
+  dAssetAmountToMint: bigint;
   referralId: `0x${string}` | string;
   blockNumber: bigint;
   tx: `0x${string}` | string;

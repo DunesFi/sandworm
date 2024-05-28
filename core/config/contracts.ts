@@ -9,8 +9,8 @@ export interface ContractConfigurations {
 
 const contractConfig: ContractConfigurations = {
   1: {
-    DepositPool: "0x41351AFc73E066CaC94ABC8efac0e4127a6583E3",
-    DETH: "0x0C106Ce6CcCf2fEC68D6cEDD51F2c03a97FF87bB",
+    DepositPool: "0x8a1229eDB53f55Bb09D472aFc95D12154590108E",
+    DETH: "0xb23a076D4d6507bb309607026Ce5FdF8b45E155f",
     // Add more contract addresses here
   },
   11155111: {

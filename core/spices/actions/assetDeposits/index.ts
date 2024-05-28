@@ -1,7 +1,7 @@
 import { Chain, createPublicClient, http } from 'viem';
 import { createClient } from "@supabase/supabase-js";
 import {
-    addDETHDepositEventsToDB,
+    addAssetDepositEventsToDB,
     fetchLastDepositBlock
 } from '../../../database/helpers';
 import { SUPABASE_KEY, SUPABASE_URL } from '../../../config/database';
@@ -51,11 +51,7 @@ export async function saveAssetDepositEvents(chainName?: string, assetName?: str
                     startBlock = BigInt(lastProcessedBlock) + 1n; // Start from the block after the last processed one
                 }
                 let logs = await getAssetDepositLogs(startBlock, publicClient, config);
-                if (assetNm == 'DETH') await addDETHDepositEventsToDB(supabase, publicClient, config, logs, assetAddress);
-                else {
-                    throw new Error(`❌ Error token deposit not supperted: ${assetNm}`);
-                }
-                // TODO add condion for DETH DUSD events to seperate dethAmountMinted var
+                await addAssetDepositEventsToDB(supabase, publicClient, config, logs, assetAddress);
 
             }
         }

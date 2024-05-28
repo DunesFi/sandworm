@@ -72,7 +72,7 @@ export async function updateDepositTable(
 function updateMintAmounts(deposit: Deposit, depositors: Map<string, DepositorInfo>, chainId: number) {
   const depositor = deposit.id;
   const referrer = deposit.referralId;
-  const dETHMintAmount = deposit.dETHMintAmount;
+  const dAssetAmountToMint = deposit.dAssetAmountToMint;
 
   if (!depositors.has(depositor)) {
     // Initialize depositor info if not present
@@ -102,11 +102,11 @@ function updateMintAmounts(deposit: Deposit, depositors: Map<string, DepositorIn
 
   // Update totalMintAmount for the depositor
   const depositorInfo = depositors.get(depositor)!;
-  depositorInfo.totalMintAmount += dETHMintAmount;
+  depositorInfo.totalMintAmount += dAssetAmountToMint;
 
   if (referrer !== "0") {
     const refInfo = depositors.get(referrer)!;
-    refInfo.totalReferred += dETHMintAmount;
+    refInfo.totalReferred += dAssetAmountToMint;
   }
 }
 
@@ -286,7 +286,7 @@ export async function addTransferEventsToDB(supabase: SupabaseClient, client: Pu
 
 }
 
-export async function addDETHDepositEventsToDB(supabase: SupabaseClient, client: PublicClient, config: ChainConfiguration, logs: any, asset: string) {
+export async function addAssetDepositEventsToDB(supabase: SupabaseClient, client: PublicClient, config: ChainConfiguration, logs: any, asset: string) {
 
   const table_name = "assetDeposits";
 
@@ -301,8 +301,8 @@ export async function addDETHDepositEventsToDB(supabase: SupabaseClient, client:
       depositor: args.depositor,
       depositAsset: args.asset,
       depositAmount: Number(args.depositAmount),
-      amountToMint: Number(args.dETHMintAmount),
-      amountToMintRaw: args.dETHMintAmount.toString(),
+      amountToMint: Number(args.dAssetAmountToMint),
+      amountToMintRaw: args.dAssetAmountToMint.toString(),
       referralId: args.referralId,
       blockNumber: Number(blockNumber),
       timestamp: new Date(Number(timestamp) * 1000).toISOString(),
