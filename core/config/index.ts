@@ -1,9 +1,9 @@
 import chainConfig, { ChainConfiguration } from './chains';
-import contractConfig, { ContractConfiguration } from './contracts';
+import contractConfig, { ChainContracts, ContractConfiguration } from './contracts';
 import { privateKeyToAccount } from 'viem/accounts'
 import { Chain, Hex, PrivateKeyAccount, WalletClient, createWalletClient, http } from 'viem'
 
-export type MergedConfiguration = ChainConfiguration & { contracts: ContractConfiguration };
+export type MergedConfiguration = ChainConfiguration & { contracts: ChainContracts };
 
 export function getMergedConfig(chainId: number): MergedConfiguration {
   const chain = chainConfig[chainId];
@@ -22,17 +22,17 @@ export function validateConfig(config: MergedConfiguration): boolean {
     return false;
   }
 
-  if (!config.contracts.DepositPool || config.contracts.DepositPool === "0x") {
+  if (!config.contracts.DETH.DepositPool || config.contracts.DETH.DepositPool === "0x") {
     console.error(`Invalid DepositPool address for ${config.networkName}`);
     return false;
   }
 
-  if (!config.contracts.DETH || config.contracts.DETH === "0x") {
+  if (!config.contracts.DETH.Asset || config.contracts.DETH.Asset === "0x") {
     console.error(`Invalid DETH address for ${config.networkName}`);
     return false;
   }
 
-  if (!config.contracts.LRTOracle || config.contracts.LRTOracle === "0x") {
+  if (!config.contracts.DETH.LRTOracle || config.contracts.DETH.LRTOracle === "0x") {
     console.error(`Invalid LRTOracle address for ${config.networkName}`);
     return false;
   }
@@ -49,9 +49,7 @@ export function validateConfig(config: MergedConfiguration): boolean {
   return true;
 }
 
-export function validateAsset(config: MergedConfiguration, asset: string): boolean {
-  return asset in config.contracts;
-}
+
 
 export async function getAccount(chain: Chain): Promise<{ client: WalletClient, pkAccount: PrivateKeyAccount }> {
 

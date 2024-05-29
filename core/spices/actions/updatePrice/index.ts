@@ -2,7 +2,7 @@ import { Chain, createPublicClient, http } from "viem";
 import { createClient } from "@supabase/supabase-js";
 import { SUPABASE_KEY, SUPABASE_URL } from "../../../config/database";
 import { getAccount, getMergedConfig, MergedConfiguration, validateConfig } from "../../../config";
-import { getChainAndAssetFromText, getChainFromText, getTokenAddressesForName, processInputNames, validateAssetName, validateChainName } from "../../helpers";
+import { getChainAndAssetFromText, getChainFromText, getOracleForAsset, getTokenAddressesForName, processInputNames, validateAssetName, validateChainName } from "../../helpers";
 import { supportedTokens } from "../../../config/contracts";
 import { updatePriceCall } from "./helpers";
 import { sepolia } from "viem/chains";
@@ -44,8 +44,8 @@ export async function updatePrices(
             for (const assetNm of assetNames) {
                 if (supportedTokens[chainNm] && supportedTokens[chainNm][assetNm]) {
                     const { chain, assetAddress: assetAddress } = await getChainAndAssetFromText(chainNm, assetNm);
-
-                    const tx = await updatePriceCall(acClient, pkAccount, config.contracts.LRTOracle, chain);
+                    let lrtOracle = getOracleForAsset(config, assetNm);
+                    const tx = await updatePriceCall(acClient, pkAccount, lrtOracle, chain);
                     await publicClient.waitForTransactionReceipt({ hash: tx });
 
                     const message = `${chainNm} ${assetNm} price updated`;

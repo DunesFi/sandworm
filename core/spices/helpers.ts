@@ -36,7 +36,6 @@ export async function getChainAndAssetFromText(chainName: string, assetName: str
   const { chain } = getChainFromText(chainName);
 
   // Fetch the merged configuration settings for the current chain
-  const config: MergedConfiguration = getMergedConfig(chain.id);
   let assetAddress = supportedTokens[chainName][assetName]
 
   if (!assetAddress) {
@@ -106,4 +105,27 @@ export function processInputNames(chainName?: string, assetName?: string): { cha
     });
   }
   return { chainNames, assetNames }
+}
+
+
+export function getDepositPoolForAsset(config: MergedConfiguration, assetName: string): `0x${string}` {
+
+  assetName = assetName.toUpperCase();
+
+  if (assetName == 'DETH') {
+    return (config.contracts.DETH.DepositPool)
+  }
+  else {
+    throw new Error(`Invalid asset name for DepositPool: ${assetName}`);
+  }
+}
+
+export function getOracleForAsset(config: MergedConfiguration, assetName: string): `0x${string}` {
+  assetName = assetName.toUpperCase();
+  if (assetName == 'DETH') {
+    return (config.contracts.DETH.LRTOracle)
+  }
+  else {
+    throw new Error(`Invalid asset name for Oracle: ${assetName}`);
+  }
 }

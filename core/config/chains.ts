@@ -13,7 +13,7 @@ export interface ChainConfigurations {
 
 const chainConfig: ChainConfigurations = {
   1: {
-    deployBlock: 19825828n,
+    deployBlock: 19965976n,
     rpcUrl: process.env.ETHEREUM_RPC_URL,
     networkName: "ethereum",
     chainId: 1,

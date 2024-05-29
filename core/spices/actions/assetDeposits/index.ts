@@ -50,7 +50,8 @@ export async function saveAssetDepositEvents(chainName?: string, assetName?: str
                     const lastProcessedBlock = processedBlocks[0].blockNumber;
                     startBlock = BigInt(lastProcessedBlock) + 1n; // Start from the block after the last processed one
                 }
-                let logs = await getAssetDepositLogs(startBlock, publicClient, config);
+                let logs = await getAssetDepositLogs(startBlock, publicClient, config, assetNm);
+
                 await addAssetDepositEventsToDB(supabase, publicClient, config, logs, assetAddress);
 
             }

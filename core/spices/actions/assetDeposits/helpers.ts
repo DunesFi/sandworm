@@ -1,10 +1,12 @@
 import { parseAbiItem } from "viem";
 import { MergedConfiguration } from "../../../config";
+import { getDepositPoolForAsset } from "../../helpers";
 
 
-export async function getAssetDepositLogs(lastBlock: bigint, publicClient: any, config: MergedConfiguration) {
+export async function getAssetDepositLogs(lastBlock: bigint, publicClient: any, config: MergedConfiguration, assetName: string) {
+    const depositPool = getDepositPoolForAsset(config, assetName);
     const filter = await publicClient.createEventFilter({
-        address: config.contracts.DepositPool as `0x${string}`,
+        address: depositPool,
         event: parseAbiItem(
             "event AssetDeposit(address indexed depositor, address indexed asset, uint256 depositAmount, uint256 dAssetAmountToMint, string referralId)",
         ),
