@@ -32,6 +32,11 @@ export function validateConfig(config: MergedConfiguration): boolean {
     return false;
   }
 
+  if (!config.contracts.DUSD.Asset || config.contracts.DUSD.Asset === "0x") {
+    console.error(`Invalid DUSD address for ${config.networkName}`);
+    return false;
+  }
+
   if (!config.contracts.DETH.LRTOracle || config.contracts.DETH.LRTOracle === "0x") {
     console.error(`Invalid LRTOracle address for ${config.networkName}`);
     return false;

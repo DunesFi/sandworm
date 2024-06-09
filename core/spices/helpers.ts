@@ -115,6 +115,10 @@ export function getDepositPoolForAsset(config: MergedConfiguration, assetName: s
   if (assetName == 'DETH') {
     return (config.contracts.DETH.DepositPool)
   }
+  else if (assetName == 'DUSD') {
+    return (config.contracts.DUSD.DepositPool)
+  }
+
   else {
     throw new Error(`Invalid asset name for DepositPool: ${assetName}`);
   }
@@ -124,6 +128,9 @@ export function getOracleForAsset(config: MergedConfiguration, assetName: string
   assetName = assetName.toUpperCase();
   if (assetName == 'DETH') {
     return (config.contracts.DETH.LRTOracle)
+  }
+  else if (assetName == 'DUSD') {
+    return (config.contracts.DUSD.LRTOracle)
   }
   else {
     throw new Error(`Invalid asset name for Oracle: ${assetName}`);

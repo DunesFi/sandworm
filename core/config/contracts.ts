@@ -23,9 +23,9 @@ const contractConfig: ContractConfigurations = {
       LRTOracle: "0x3Fd915Ad39daF8731D2DaFF3525f5Da2d9Aa9b20",
     },
     DUSD: {
-      DepositPool: "0x",
-      Asset: "0x",
-      LRTOracle: "0x",
+      DepositPool: "0x634598473B91a6870c1DB151142db0b61C5de8CC",
+      Asset: "0xFAEb812D7aBBe567AEeF2d56c87B8C75FEf5aB90",
+      LRTOracle: "0xE2b8f0B872D7e72015Ad41cf44d5aeCa80BAee0D",
     },
     // Add more contracts as needed
   },
@@ -77,5 +77,7 @@ export default contractConfig;
 export const supportedTokens = {
   'mainnet': {
     'DETH': contractConfig[1].DETH.Asset,
+    'DUSD': contractConfig[1].DUSD.Asset
+
   }
 };
